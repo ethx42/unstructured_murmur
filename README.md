@@ -24,6 +24,6 @@ To be completed.
 To be completed
 
 ## Creators
-- ![Instagram Icon](https://i.imgur.com/wVpGhgr.png) [Andrés Salas - Graphic Designer & Videographer](https://www.instagram.com/framed.audiovisual/)
-- ![Instagram Icon](https://i.imgur.com/wVpGhgr.png) [Santiago Torres - Interactive Artist](https://www.instagram.com/dirty_n_epic/)
+- [Andrés Salas - Graphic Designer & Videographer](https://www.instagram.com/framed.audiovisual/)
+- [Santiago Torres - Interactive Artist](https://www.instagram.com/dirty_n_epic/)
 
