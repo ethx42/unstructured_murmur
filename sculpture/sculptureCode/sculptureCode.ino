@@ -13,16 +13,16 @@ const unsigned int outPort = 9000;       // Port for sending OSC messages
 const unsigned int localPort = 8888;     // Local port to listen for OSC messages
 
 // Pin definitions
-const int touchPins[] = {T0, T2, T3, T4, T5, T6};
+const int touchPins[] = {T0, T3, T4, T5, T6, T7};
 const char* pinNames[] = {"/hex/1", "/hex/2", "/hex/3", "/hex/4", "/hex/5", "/hex/6"};
 const int numberOfPins = sizeof(touchPins) / sizeof(touchPins[0]);
 
 // OSC UDP instance
 WiFiUDP Udp;
 
-const int ledPinB = 25; // Blue channel
-const int ledPinG = 26; // Green channel
-const int ledPinR = 27; // Red channel
+const int ledPinR = 18; // Red channel
+const int ledPinG = 19; // Green channel
+const int ledPinB = 21; // Blue channel
 
 // Global variables to hold the timing information
 unsigned long previousMillis = 0;        // Stores last time the OSC messages were sent
@@ -67,10 +67,13 @@ void loop() {
       int touchValue = touchRead(touchPins[i]);
       sendOSCMessage(pinNames[i], touchValue);
     }
+
   }
 
   // Continuously check for incoming OSC messages without delay
   receiveOSCMessage();
+  delay(100);
+
 }
 
 void sendOSCMessage(const char* address, int touchValue) {
@@ -85,91 +88,56 @@ void sendOSCMessage(const char* address, int touchValue) {
 void receiveOSCMessage() {
   int size = Udp.parsePacket();
   if (size > 0) {
-    // Debug: Print the size of the incoming packet
-    Serial.print("Received packet size: ");
-    Serial.println(size);
-
     uint8_t *buffer = new uint8_t[size];
     Udp.read(buffer, size);
 
-    // Debug: Print the raw buffer contents
-    Serial.print("Received packet contents: ");
-    for(int i = 0; i < size; i++) {
-      Serial.print(buffer[i], HEX);
-      Serial.print(" ");
-    }
-    Serial.println();
-
     OSCBundle bundle;
-    for (int i = 0; i < size; i++) {
-      bundle.fill(buffer[i]);
-    }
-    delete[] buffer;
+    bundle.fill(buffer, size); // Llenar el bundle con el buffer completo
+    
+    delete[] buffer; // Liberar la memoria del buffer después de usarlo
 
-    // Debug: Print the number of messages in the bundle
-    Serial.print("Number of messages in the bundle: ");
-    Serial.println(bundle.size());
-
-    for (int i = 0; i < bundle.size(); i++) {
-      OSCMessage *bundledMsg = bundle.getOSCMessage(i);
-      if (bundledMsg != nullptr) {
-        char address[32];
-        bundledMsg->getAddress(address, 0, 32);
-        Serial.print("OSC Address: ");
-        Serial.println(address);
-
-        if (strcmp(address, "/hex/r") == 0) {
-          oscRCallBack(*bundledMsg);
-        } else if (strcmp(address, "/hex/g") == 0) {
-          oscGCallBack(*bundledMsg);
-        } else if (strcmp(address, "/hex/b") == 0) {
-          oscBCallBack(*bundledMsg);
-        } else {
-          // Debug: Print out if an unexpected address is received
-          Serial.print("Unexpected OSC address: ");
-          Serial.println(address);
-        }
-      } else {
-        // Debug: Print out if a message was null
-        Serial.println("Received a null OSC message in the bundle.");
-      }
-    }
+    processBundle(bundle);
   } else {
-    // Debug: Print out if no packet was received
-    Serial.println("No packet received.");
+    Serial.println("No packet received."); // Solo un log para la ausencia de paquetes
   }
 }
 
+void processBundle(OSCBundle &bundle) {
+  for (int i = 0; i < bundle.size(); i++) {
+    OSCMessage *bundledMsg = bundle.getOSCMessage(i);
+    if (bundledMsg) { // nullptr check is implicit
+      oscDispatch(*bundledMsg);
+    }
+  }
+}
 
-// Callbacks separados para cada dirección
+// Esta función maneja los mensajes entrantes basados en su dirección OSC
+void oscDispatch(OSCMessage &msg) {
+  char address[32];
+  msg.getAddress(address, 0, 31); // Obtiene la dirección del mensaje OSC
+  Serial.print("Address: "); Serial.println(address); // Log esencial
+
+
+  if (strcmp(address, "/hex/r") == 0) {
+    oscRCallBack(msg);
+  } else if (strcmp(address, "/hex/g") == 0) {
+    oscGCallBack(msg);
+  } else if (strcmp(address, "/hex/b") == 0) {
+    oscBCallBack(msg);
+  } else {
+    Serial.print("Unexpected address: "); Serial.println(address); // Log para direcciones inesperadas
+  }
+}
+
+// Las funciones callback ahora simplemente manejan el mensaje
 void oscRCallBack(OSCMessage &msg) {
-  handleColorMessage(msg, "Received OSC message for R channel");
-  float value = msg.getFloat(0);
-   Serial.print("R channel value: ");
-  Serial.println(value);
-  analogWrite(ledPinR, (int)(value * 255));
+  analogWrite(ledPinR, (int)(msg.getFloat(0) * 255));
 }
 
 void oscGCallBack(OSCMessage &msg) {
-  handleColorMessage(msg, "Received OSC message for G channel");
-  float value = msg.getFloat(0);
-  Serial.print("G channel value: ");
-  Serial.println(value);
-  analogWrite(ledPinG, (int)(value * 255));
+  analogWrite(ledPinG, (int)(msg.getFloat(0) * 255));
 }
 
 void oscBCallBack(OSCMessage &msg) {
-  handleColorMessage(msg, "Received OSC message for B channel");
-  float value = msg.getFloat(0);
-  Serial.print("B channel value: ");
-  Serial.println(value);
-  analogWrite(ledPinB, (int)(value * 255));
-}
-
-// Función de manejo genérica para imprimir y controlar el LED
-void handleColorMessage(OSCMessage &msg, const char* debugMessage) {
-  float value = msg.getFloat(0);
-  Serial.println(debugMessage);
-  Serial.print(", value: ");
-  Serial.println(value);
+  analogWrite(ledPinB, (int)(msg.getFloat(0) * 255));
 }
