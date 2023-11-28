@@ -4,19 +4,20 @@
 #include <OSCBundle.h> 
 
 // Network credentials
-const char* ssid1 = "MURMUR";
-const char* password1 = "";
+const char* ssid1 = "bitches_brew";
+const char* password1 = "Somebody is watching you, there're strangers 333";
 
-const char* ssid2 = "bitches_brew";
-const char* password2 = "Somebody is watching you, there're strangers 333";
 
+const char* ssid2 = "MURMUR";
+const char* password2 = "";
 
 // OSC server details
-const IPAddress outIp(192, 168, 0, 103); // IP of the OSC server (e.g., TouchDesigner)
+const IPAddress outIp(192, 168, 0, 200); // IP of the OSC server (e.g., TouchDesigner)
 const unsigned int outPort = 9000;       // Port for sending OSC messages
 const unsigned int localPort = 8888;     // Local port to listen for OSC messages
 
 // Pin definitions
+// Touch Pins: D4, D15, D13, D12, D14, D27
 const int touchPins[] = {T0, T3, T4, T5, T6, T7};
 const char* pinNames[] = {"/hex/1", "/hex/2", "/hex/3", "/hex/4", "/hex/5", "/hex/6"};
 const int numberOfPins = sizeof(touchPins) / sizeof(touchPins[0]);
@@ -25,16 +26,16 @@ const int numberOfPins = sizeof(touchPins) / sizeof(touchPins[0]);
 WiFiUDP Udp;
 
 const int ledPinR = 18; // Red channel
-const int ledPinG = 19; // Green channel
+const int ledPinG = 19; // Green channel 
 const int ledPinB = 21; // Blue channel
 
 // Global variables to hold the timing information
 unsigned long previousMillis = 0;        // Stores last time the OSC messages were sent
-const long interval = 1;                 // Interval at which to send OSC messages (milliseconds)
+const long interval = 70;                 // Interval at which to send OSC messages (milliseconds)
 
 void setup() {
   Serial.begin(115200);
-  Serial.println("Setting up ESP32/Hex");
+  Serial.println("Setting up ESP32/hex");
   
   // Try to connect to the first WiFi network
   if (!connectToWiFi(ssid1, password1)) {
