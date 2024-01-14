@@ -1,7 +1,8 @@
 #include <WiFi.h>
 #include <WiFiUdp.h>
 #include <OSCMessage.h>
-#include <OSCBundle.h> 
+#include <OSCBundle.h>
+#include <NewPing.h>
 
 // Network credentials
 const char* ssid1 = "bitches_brew";
@@ -28,6 +29,13 @@ WiFiUDP Udp;
 const int ledPinR = 18; // Red channel
 const int ledPinG = 19; // Green channel 
 const int ledPinB = 21; // Blue channel
+
+
+// Ultrasonic Sensor
+#define TRIGGER_PIN  32  // Trigger pin of the ultrasonic sensor
+#define ECHO_PIN     35  // Echo pin of the ultrasonic sensor
+#define MAX_DISTANCE 400 // Max distance to measure (in cm)
+NewPing sonar(TRIGGER_PIN, ECHO_PIN, MAX_DISTANCE);
 
 // Global variables to hold the timing information
 unsigned long previousMillis = 0;        // Stores last time the OSC messages were sent
@@ -81,6 +89,14 @@ void loop() {
       int touchValue = touchRead(touchPins[i]);
       sendOSCMessage(pinNames[i], touchValue);
     }
+
+    // Measure disntance with the ultrasonic sensor
+    unsigned int uS = sonar.ping_median(5); // Do 5 pings, discard outliers and return median in microseconds
+    int distance = uS / US_ROUNDTRIP_CM; // Convert ping time to distance and print result (0 = outside set distance range)
+    Serial.println(distance);
+
+    // Send distance value via OSC
+    sendOSCMessage("/hex/distance", distance);
 
     receiveOSCMessage();
   }
