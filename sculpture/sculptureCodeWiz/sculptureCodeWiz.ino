@@ -94,7 +94,7 @@ void loop() {
     // Measure disntance with the ultrasonic sensor
     unsigned int uS = sonar.ping_median(5); // Do 5 pings, discard outliers and return median in microseconds
     int distance = uS / US_ROUNDTRIP_CM; // Convert ping time to distance and print result (0 = outside set distance range)
-    Serial.println(distance);
+    // Serial.println(distance);
 
     // Send distance value via OSC
     sendOSCMessage("/hex/distance", distance);
@@ -125,9 +125,17 @@ bool connectToWiFi(const char* ssid, const char* password) {
 void sendOSCMessage(const char* address, int touchValue) {
   OSCMessage msg(address);
   msg.add((float)touchValue); // OSC typically uses float values
+  
+  // Send to the original port (8000) TOUCH DESIGNER
   Udp.beginPacket(outIp, outPort);
   msg.send(Udp);
   Udp.endPacket();
+
+  // Send to the new port (4444) PROCESSING
+  Udp.beginPacket(outIp, 4444);
+  msg.send(Udp);
+  Udp.endPacket();
+
   msg.empty(); // Clear the message for reuse
 }
 
