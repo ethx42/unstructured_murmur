@@ -10,8 +10,8 @@ void setup() {
   size(800, 600);
   noSmooth(); // Disable antialiasing
 
-  oscP5Hex = new OscP5(this, 3333);  // initialize port for HEX 3333 from ESP32
-  oscP5Wiz = new OscP5(this, 4444);  // Initialize port for WIZ 4444 from ESP32
+  oscP5Hex = new OscP5(this, 3333);  // Receiving msgs from ESP32 HEX - port 3333
+  oscP5Wiz = new OscP5(this, 4444);  // Receiving msgs from ESP32 WIZ - port 4444
 
   color[] rainbowColorsHex = {
     color(255, 69, 0),
