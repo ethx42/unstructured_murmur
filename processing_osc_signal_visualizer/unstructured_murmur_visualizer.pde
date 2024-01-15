@@ -58,6 +58,7 @@ void draw() {
   fill(120, 120, 120);
   textSize(12);
   textAlign(RIGHT, CENTER);
+
   for (int i = 0; i < lineBlobsHex.length; i++) {
     text("HEX " + (i + 1), width - 10, lineBlobsHex[i].y);
   }
@@ -69,6 +70,7 @@ void draw() {
   for (LineBlob blob : lineBlobsHex) {
     blob.display();
   }
+
   for (LineBlob blob : lineBlobsWiz) {
     blob.display();
   }
@@ -81,14 +83,14 @@ void oscEvent(OscMessage theOscMessage) {
     int lineIndex = int(addr.substring(5)) - 1;
     if (lineIndex >= 0 && lineIndex < 6) {
       float value = theOscMessage.get(0).floatValue();
-      boolean isPressed = value < 45;
+      boolean isPressed = value < 45; // 45 is the threshold for pressure, use to calibrate HEX
       lineBlobsHex[lineIndex].update(isPressed);
     }
   } else if (addr.startsWith("/wiz/")) {
     int lineIndex = int(addr.substring(5)) - 1;
     if (lineIndex >= 0 && lineIndex < 6) {
       float value = theOscMessage.get(0).floatValue();
-      boolean isPressed = value < 45;
+      boolean isPressed = value < 45; // 45 is the threshold for pressure, use to calibrate WIZ
       lineBlobsWiz[lineIndex].update(isPressed);
     }
   }
