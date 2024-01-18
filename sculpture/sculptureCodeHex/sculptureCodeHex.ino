@@ -163,7 +163,7 @@ void sendOSCMessage(const char* address, int touchValue) {
 }
 
 void startSmokeOSCMessage(bool value) {
-  OSCMessage msg("/wiz/startSmokeMachine");
+  OSCMessage msg("/hex/startSmokeMachine");
   msg.add(value);
 
   Udp.beginPacket(smokeMachineIp, smokeMachinePort);
