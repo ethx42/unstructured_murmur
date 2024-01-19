@@ -12,7 +12,7 @@ const int relayPin = 18;
 WiFiUDP Udp;
 
 unsigned long relayActivatedTime = 0;
-const unsigned long relayOnDuration = 20000; // 1 minute in milliseconds
+const unsigned long relayOnDuration = 12000; // 12 seconds
 bool relayActivated = false;
 
 void setup() {
@@ -23,6 +23,19 @@ void setup() {
   if (!connectToWiFi(ssid1, password1)) {
     connectToWiFi(ssid2, password2);
   }
+
+if (WiFi.status() == WL_CONNECTED) {
+    // WiFi is connected, proceed with the rest of the setup
+    Serial.println("WiFi connected.");
+    Serial.print("IP Address: ");
+    Serial.println(WiFi.localIP());
+    String mac = WiFi.macAddress();
+    Serial.println("MAC Address: " + mac);
+  } else {
+    // Neither of the WiFi networks worked
+    Serial.println("Could not connect to any WiFi network.");
+  }
+
   Udp.begin(localPort);
 }
 
@@ -85,7 +98,7 @@ void processMessage(OSCMessage &msg) {
     Serial.print("Received OSC message at address: ");
     Serial.println(address);
     Serial.println("Value: true");
-    if ((strcmp(address, "/wiz/startSmokeMachine") == 0 || strcmp(address, "/hex/startSmokeMachine") == 0) && !relayActivated) {
+    if ((strcmp(address, "/startSmokeMachine") == 0) && !relayActivated) {
       digitalWrite(relayPin, LOW); // Turn on the relay
       relayActivated = true;
       relayActivatedTime = millis();

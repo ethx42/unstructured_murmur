@@ -21,7 +21,7 @@ const IPAddress smokeMachineIp(192, 168, 0, 122);
 const unsigned int smokeMachinePort = 1234;
 
 unsigned long lastTimeDistanceBelow77 = 0;
-const unsigned long debounceDuration = 1500;
+const unsigned long debounceDuration = 2000;
 
 // Pin definitions
 // Touch Pins: D4, D15, D13, D12, D14, D27
@@ -163,7 +163,7 @@ void sendOSCMessage(const char* address, int touchValue) {
 }
 
 void startSmokeOSCMessage(bool value) {
-  OSCMessage msg("/hex/startSmokeMachine");
+  OSCMessage msg("/startSmokeMachine");
   msg.add(value);
 
   Udp.beginPacket(smokeMachineIp, smokeMachinePort);
