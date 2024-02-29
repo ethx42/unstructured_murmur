@@ -1,29 +1,33 @@
 # Unstructured Murmur
 
-## Description
-"Unstructured Murmur" is an interactive expanded cinema installation focusing on the interplay of light, shadow, memory, and perception in a dark gallery space. It employs interactive sculptures, video projections, and sound to create a sensory experience that connects visitors with their emotions and memories.
+## Introduction
+Welcome to "Unstructured Murmur," an immersive expanded cinema installation where light, shadow, memory, and perception intertwine. This installation, set in a darkened gallery space, invites visitors to explore a sensory journey through interactive sculptures, dynamic video projections, and enveloping soundscapes. Dive into an experience that bridges the gap between external stimuli and internal reflections, connecting you deeply with your emotions and memories.
 
-## Repository Structure
-- `/sculpture`: Contains C code for the Doit ESP32 devkit v1 microcontroller.
-- `/channels`: Directory for hosting videos to be mixed in real-time.
-- `/`: TouchDesigner `.toe` files for the 099 64-Bit Build 2022.33910 and a `/backup` folder with backup files.
+## Project Structure
+Dive into the components of "Unstructured Murmur":
+- `/sculpture`: Home to the C code for the Doit ESP32 devkit v1, the brain behind our interactive sculptures.
+- `/channels`: A vault for videos set to blend in real-time, crafting a unique narrative with each visit.
+- `/`: The hub for TouchDesigner `.toe` files specific to the 099 64-Bit Build 2022.33910, complemented by a `/backup` folder for safeguarding our digital creations.
 
-## Installation Components
-- Interactive Sculptures: Equipped with capacitive sensors.
-- Projector: For projecting images and videos on a smoke screen.
-- Smoke Screen: Ethereal projection medium.
-- Audiovisual Content: Videos in a 4:3 aspect ratio projected at 24 FPS.
-- Computer: Processes sensor data and synchronizes audiovisual stimuli.
-- Sound System: Integrated audio that varies with interaction.
-- Wireless Network: Enables communication between components.
+## Installation Elements
+"Unstructured Murmur" is brought to life through:
+- **Interactive Sculptures**: React to touch with capacitive sensors, altering light and sound.
+- **Projector**: Casts haunting images and fluid videos on a smoke screen, creating an illusion of depth.
+- **Smoke Screen**: A canvas of mist capturing fleeting shadows and vibrant colors.
+- **Audiovisual Content**: Curated visuals and soundtracks projected in 4:3 aspect ratio at 24 FPS, syncing with the ambiance.
+- **Computer**: The core that processes sensor inputs and orchestrates the audiovisual spectacle.
+- **Sound System**: Delivers immersive audio, morphing with visitor interactions.
+- **Wireless Network**: Ensures seamless communication among all installation components.
 
-## Installation and Configuration
-To be completed.
+## Setting Up
+Details on installation and configuration are on their way – stay tuned.
 
-## Usage
-To be completed
+## How to Engage
+Guidelines for engaging with "Unstructured Murmur" will be provided shortly.
 
-## Creators
-- [Andrés Salas - Graphic Designer & Videographer](https://www.instagram.com/framed.audiovisual/)
-- [Santiago Torres - Interactive Artist](https://www.instagram.com/dirty_n_epic/)
+## Meet the Creators
+Embark on this journey with us:
+- [Andrés Salas](https://www.instagram.com/framed.audiovisual/) - The visionary Graphic Designer & Videographer weaving narratives through visuals.
+- [Santiago Torres](https://www.instagram.com/dirty_n_epic/) - The innovative Interactive Artist crafting the bridge between technology and emotion.
 
+Join us in redefining the boundaries of cinema and interactive art.
