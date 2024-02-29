@@ -13,6 +13,7 @@ WiFiUDP Udp;
 
 void setup() {
   Serial.begin(115200);
+  Serial.println("Setting up ESP32/LIGHTS");
   pinMode(relayPin, OUTPUT);
   digitalWrite(relayPin, LOW);
 
@@ -20,11 +21,15 @@ void setup() {
     connectToWiFi(ssid2, password2);
   }
 
-  if (WiFi.status() == WL_CONNECTED) {
+if (WiFi.status() == WL_CONNECTED) {
+    // WiFi is connected, proceed with the rest of the setup
     Serial.println("WiFi connected.");
     Serial.print("IP Address: ");
     Serial.println(WiFi.localIP());
+    String mac = WiFi.macAddress();
+    Serial.println("MAC Address: " + mac);
   } else {
+    // Neither of the WiFi networks worked
     Serial.println("Could not connect to any WiFi network.");
   }
 

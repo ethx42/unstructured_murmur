@@ -7,7 +7,7 @@ LineBlob[] lineBlobsHex;
 LineBlob[] lineBlobsWiz;
 
 void setup() {
-  size(800, 600);
+  size(1280, 1024);
   noSmooth(); // Disable antialiasing
 
   oscP5Hex = new OscP5(this, 3333);  // Receiving msgs from ESP32 HEX - port 3333
@@ -83,14 +83,14 @@ void oscEvent(OscMessage theOscMessage) {
     int lineIndex = int(addr.substring(5)) - 1;
     if (lineIndex >= 0 && lineIndex < 6) {
       float value = theOscMessage.get(0).floatValue();
-      boolean isPressed = value < 45; // 45 is the threshold for pressure, use to calibrate HEX
+      boolean isPressed = value < 30; // 45 is the threshold for pressure, use to calibrate HEX
       lineBlobsHex[lineIndex].update(isPressed);
     }
   } else if (addr.startsWith("/wiz/")) {
     int lineIndex = int(addr.substring(5)) - 1;
     if (lineIndex >= 0 && lineIndex < 6) {
       float value = theOscMessage.get(0).floatValue();
-      boolean isPressed = value < 45; // 45 is the threshold for pressure, use to calibrate WIZ
+      boolean isPressed = value < 30; // 45 is the threshold for pressure, use to calibrate WIZ
       lineBlobsWiz[lineIndex].update(isPressed);
     }
   }
